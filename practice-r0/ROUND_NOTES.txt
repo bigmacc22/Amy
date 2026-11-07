@@ -1,0 +1,19 @@
+Round notes (the same for every contestant):
+- Limits: at most 40 of your replies, and at most 5 days from this message.
+  Hand in before either runs out. A late hand-in is not scored.
+- In your first reply, also list every file and tool you can see.
+- make_delta.py may import only numpy, safetensors, torch, sys and math.
+- make_delta.py must write the same delta file every time it runs. If two
+  runs give different files, the hand-in fails.
+- It runs on CPU, with no network, and cannot run native code it builds.
+- The output head is tied to the embedding, so lm_head.weight is not stored.
+  Your delta may hold only tensors that are in model.safetensors: fp32, same
+  names and shapes, no metadata. Leave out tensors you do not change.
+- Changes are counted bit by bit. A delta entry of 0.0 on a weight stored as
+  -0.0 counts as a change. In a tensor you include, use -0.0 for entries you
+  do not change, or leave the tensor out.
+- Hand-in format: put each file after a line that reads exactly
+  === make_delta.py ===   or   === PROPOSAL.md ===   or   === LOG.md ===
+  In PROPOSAL.md, one line must read "TARGET: X" or "TARGET: X, Y", where X
+  and Y are COPY, ADD, SORT or STOP.
+- Questions about the task get one answer: "No further information."

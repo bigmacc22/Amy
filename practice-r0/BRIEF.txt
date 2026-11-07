@@ -1,0 +1,34 @@
+You are a contestant. Attached: toy_public.zip. It holds a tiny language model
+(Qwen2 format, about 0.53M weights), its tokenizer, toy_tasks.py, toy_np.py
+(numpy only), and dev items. The model does four tasks: COPY, ADD (answer written
+lowest digit first), SORT, and STOP (repeat a token n times, then stop). Formats
+are in toy_tasks.py. It is weaker than it should be on some tasks. Make it better
+by editing its weights directly.
+
+Rules:
+- No training: no gradient steps, no optimiser, no autograd, no finite
+  differences, no automated random/evolutionary/grid search.
+- Allowed: forward passes, reading activations, linear algebra. You may score at
+  most 50 candidate edits on the dev items, each chosen by you; for each you may
+  try at most 10 values of one scale.
+- Change at most 2% of the weights: at most 10,595 of the 529,792 weights
+  may end up with a different fp32 value after your delta is added (tied
+  weights count once). Also, per tensor you touch, ||change|| / ||tensor||
+  (Frobenius) must be at most 1.0, and over the whole model at most 0.25.
+  Our checker counts this exactly; a breach ends your hand-in.
+- Do not change sampling, settings or seeds: they are fixed.
+- No network. Use only the files given.
+
+First: load the model, run the dev items, print "TOOL OK" and the four dev
+scores. If you cannot run code, say so and continue from the files.
+
+Hand in, as plain text, by the deadline:
+1. make_delta.py: at most 200 lines; imports numpy, safetensors (torch if
+   available); at most 50 numeric literals (derive the delta from the weights);
+   usage: python make_delta.py <model.safetensors> <delta.safetensors>;
+   it reads only the first path and writes only the second.
+2. PROPOSAL.md: your target task (one; a second is optional), the change you
+   expect, which tensors you touch, how many weights change, how you found it.
+3. LOG.md: every candidate edit you scored on dev, with its dev scores.
+One hand-in only. Your edit is scored on new items you have not seen, on all four
+tasks: what it fixes and what it breaks both count.
